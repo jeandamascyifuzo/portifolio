@@ -18,16 +18,7 @@ const navLinks = [
     title: "Contact",
     path: "#contact",
   },
-  {
-    title: "Service",
-    path: "#service",
-  },
-  {
-    title: "Blog",
-    path: "#blog",
-  },
 ];
-//nav bar
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
