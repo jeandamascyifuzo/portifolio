@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.130",
+    "@mui/material": "^5.13.1",
     "autoprefixer": "10.4.15",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.15",
