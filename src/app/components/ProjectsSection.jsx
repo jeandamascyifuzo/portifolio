@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import ProjectTag from "./ProjectTag";
 import SectionHeading from "./SectionHeading";
+import FeaturedProject from "./FeaturedProject";
 import { projects } from "@/data/portfolio";
 
 const categories = ["All", ...new Set(projects.map((p) => p.category))];
@@ -27,9 +28,10 @@ const ProjectsSection = () => {
         index="02"
         eyebrow="Projects"
         title="Shipped to production"
-        subtitle="Websites and applications I've designed, built and shipped."
+        subtitle="Digital banking systems I build at ADFinance, plus websites I've designed and launched."
         center
       />
+      <FeaturedProject />
       {/* Filters only help once there is more than one category. */}
       {categories.length > 2 && (
         <div className="mb-8 flex flex-wrap justify-center gap-2">
@@ -50,7 +52,7 @@ const ProjectsSection = () => {
             variants={cardVariants}
             initial="initial"
             animate={isInView ? "animate" : "initial"}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
+            transition={{ duration: 0.4, delay: Math.min(index, 6) * 0.08 }}
           >
             <ProjectCard project={project} index={index} />
           </motion.li>

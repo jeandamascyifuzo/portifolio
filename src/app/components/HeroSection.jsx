@@ -10,6 +10,7 @@ import { profile, projects, skills } from "@/data/portfolio";
 const techCount = skills.reduce((total, group) => total + group.items.length, 0);
 
 const stats = [
+  { value: profile.yearsOfExperience, label: "Years experience" },
   { value: String(projects.length).padStart(2, "0"), label: "Projects shipped" },
   { value: String(techCount).padStart(2, "0"), label: "Technologies" },
 ];
@@ -43,7 +44,7 @@ const ProfileCard = () => (
     </div>
     <dl className="mt-4 grid grid-cols-2 gap-2 font-mono text-[11px]">
       {[
-        ["Class", profile.roles[0].replace(/ Developer$/, "")],
+        ["Class", profile.specialty],
         ["Base", profile.location.split(",")[0]],
       ].map(([key, value]) => (
         <div key={key} className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2">

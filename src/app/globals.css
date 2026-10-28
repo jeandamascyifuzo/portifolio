@@ -41,6 +41,8 @@ body {
     opacity: 0.35;
     transition: opacity 0.3s;
     pointer-events: none;
+    /* Stay above card content, e.g. an expanded cover. */
+    z-index: 20;
   }
   .gradient-border:hover::before,
   .gradient-border:focus-within::before {
