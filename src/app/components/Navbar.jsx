@@ -1,72 +1,88 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
-import NavLink from "./NavLink";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import MenuOverlay from "./MenuOverlay";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import NavLink from "./NavLink";
+import MenuOverlay from "./MenuOverlay";
+import { experiences, profile } from "@/data/portfolio";
 
 const navLinks = [
-  {
-    title: "About",
-    path: "#about",
-  },
-  {
-    title: "Projects",
-    path: "#projects",
-  },
-  {
-    title: "Contact",
-    path: "#contact",
-  },
+  { title: "About", path: "#about" },
+  { title: "Projects", path: "#projects" },
+  ...(experiences.length ? [{ title: "Experience", path: "#experience" }] : []),
+  { title: "Contact", path: "#contact" },
 ];
+
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className="fixed mx-auto border border-[#33353F] top-0 left-0 right-0 z-10 bg-[#121212] bg-opacity-100">
-      <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto px-4 py-2">
-        <Link
-          href={"/"}
-          className="text-2xl md:text-5xl text-white font-semibold md:pl-6"
-        >
-          <Image
-            src="/images/my-logo.png"
-            width={80}
-            height={80}
-            alt=""
-            className="rounded-md"
-          />
-        </Link>
-        <div className="mobile-menu block md:hidden">
-          {!navbarOpen ? (
-            <button
-              onClick={() => setNavbarOpen(true)}
-              className="flex items-center px-3 py-2 border rounded border-slate-200 text-slate-200 hover:text-white hover:border-white"
-            >
-              <Bars3Icon className="h-5 w-5" />
-            </button>
-          ) : (
-            <button
-              onClick={() => setNavbarOpen(false)}
-              className="flex items-center px-3 py-2 border rounded border-slate-200 text-slate-200 hover:text-white hover:border-white"
-            >
-              <XMarkIcon className="h-5 w-5" />
-            </button>
-          )}
-        </div>
-        <div className="menu hidden md:block md:w-auto" id="navbar">
-          <ul className="flex p-4 md:p-0 md:flex-row md:space-x-8 mt-0">
-            {navLinks.map((link, index) => (
-              <li key={index}>
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
+      <div
+        className={`mx-auto max-w-6xl rounded-2xl transition-all duration-300 ${
+          scrolled || navbarOpen
+            ? "glass bg-base/70 shadow-lg shadow-black/40"
+            : "border border-transparent"
+        }`}
+      >
+        <nav aria-label="Main" className="flex items-center justify-between px-4 py-2">
+          <Link href="/" aria-label={`${profile.name} — home`}>
+            <Image
+              src="/images/my-logo.png"
+              width={64}
+              height={39}
+              alt={`${profile.shortName} logo`}
+              priority
+            />
+          </Link>
+          <ul className="hidden items-center gap-1 md:flex">
+            {navLinks.map((link) => (
+              <li key={link.path}>
                 <NavLink href={link.path} title={link.title} />
               </li>
             ))}
           </ul>
-        </div>
+          <div className="flex items-center gap-2">
+            <Link
+              href="#contact"
+              className="gradient-border hidden items-center gap-2 rounded-xl bg-white/5 px-4 py-2 font-mono text-sm text-white transition hover:bg-white/10 sm:flex"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Let&apos;s talk
+            </Link>
+            <button
+              type="button"
+              onClick={() => setNavbarOpen((open) => !open)}
+              aria-label={navbarOpen ? "Close menu" : "Open menu"}
+              aria-expanded={navbarOpen}
+              aria-controls="mobile-menu"
+              className="rounded-xl border border-white/15 p-2 text-slate-200 hover:border-white hover:text-white md:hidden"
+            >
+              {navbarOpen ? (
+                <XMarkIcon className="h-5 w-5" />
+              ) : (
+                <Bars3Icon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </nav>
+        {navbarOpen && (
+          <MenuOverlay links={navLinks} onNavigate={() => setNavbarOpen(false)} />
+        )}
       </div>
-      {navbarOpen ? <MenuOverlay links={navLinks} /> : null}
-    </nav>
+    </header>
   );
 };
 

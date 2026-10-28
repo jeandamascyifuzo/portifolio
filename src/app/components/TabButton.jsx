@@ -6,19 +6,28 @@ const variants = {
   active: { width: "calc(100% - 0.75rem)" },
 };
 
-const TabButton = ({ active, selectTab, children }) => {
-  const buttonClasses = active ? "text-white" : "text-[#ADB7BE]";
+const TabButton = ({ id, active, selectTab, children }) => {
+  const buttonClasses = active ? "text-white" : "text-slate-500";
 
   return (
-    <button onClick={selectTab}>
-      <p className={`mr-3 font-semibold hover:text-white ${buttonClasses}`}>
+    <button
+      type="button"
+      role="tab"
+      id={`tab-${id}`}
+      aria-selected={active}
+      aria-controls={`panel-${id}`}
+      onClick={selectTab}
+    >
+      <span
+        className={`mr-3 font-mono text-sm uppercase tracking-wider hover:text-white ${buttonClasses}`}
+      >
         {children}
-      </p>
+      </span>
       <motion.div
         animate={active ? "active" : "default"}
         variants={variants}
-        className="h-1 bg-primary-500 mt-2 mr-3"
-      ></motion.div>
+        className="mr-3 mt-2 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-400 shadow-[0_0_8px_rgba(34,211,238,0.7)]"
+      />
     </button>
   );
 };
